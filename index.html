@@ -265,7 +265,7 @@
 <div class="header-box">
     <h1>ئەم لاپەڕەیە تایبەتە بە کوردانی ڕۆژهەڵات کە حەز دەکەن فێربن بە ڕێنووسی کوردی بنووسن.</h1>
     <p class="text-sm">یک خودآموز سریع برای یادگیری رسم‌الخط کوردی. اگر الفبای فارسی را بلدید، با این راهنما می‌توانید در چند دقیقه، نوشتن به زبان کوردی را شروع کنید</p>
-    <p>تحقیق و توسعه : سهراب احمدیان</p>
+    <p>نووسین و گەشەپێدان: سۆهراب ئەحمەدیان</p>
 </div>
 
 <div class="poster-container">
@@ -598,64 +598,40 @@
                     const originalWords = text.trim().split(/\s+/);
                     const correctedWords = correctedText.trim().split(/\s+/);
                     let htmlOutput = '';
-                    // Compare original words with corrected words to highlight differences
-                    let i = 0, j = 0;
-                    while (i < originalWords.length && j < correctedWords.length) {
-                        if (originalWords[i] === correctedWords[j]) {
-                            htmlOutput += `${correctedWords[j]} `;
-                            i++;
-                            j++;
-                        } else {
-                            // Find the corrected word in the original text or vice versa to handle additions/deletions
-                            let originalFound = false;
-                            let correctedFound = false;
-                            
-                            // Check if the original word is found later in the corrected text
-                            let tempJ = j + 1;
-                            while (tempJ < correctedWords.length) {
-                                if (originalWords[i] === correctedWords[tempJ]) {
-                                    for (let k = j; k < tempJ; k++) {
-                                        htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[k]}</span> `;
-                                    }
-                                    j = tempJ;
-                                    correctedFound = true;
-                                    break;
+                    let j = 0; // Index for correctedWords
+                    for (let i = 0; i < originalWords.length; i++) {
+                        let wordFound = false;
+                        let lookAheadLimit = Math.min(j + 5, correctedWords.length);
+                        
+                        // Look ahead in the corrected words to find a match
+                        for (let k = j; k < lookAheadLimit; k++) {
+                            if (originalWords[i] === correctedWords[k]) {
+                                // Add any new words in between
+                                for (let l = j; l < k; l++) {
+                                    htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[l]}</span> `;
                                 }
-                                tempJ++;
+                                htmlOutput += `${correctedWords[k]} `;
+                                j = k + 1;
+                                wordFound = true;
+                                break;
                             }
+                        }
 
-                            // If not found, it must be an addition
-                            if (!correctedFound) {
+                        // If no match is found, the word might be incorrect or a deletion
+                        if (!wordFound) {
+                            if (j < correctedWords.length) {
                                 htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
                                 j++;
-                            }
-                            
-                            // Check if the corrected word is found later in the original text
-                            let tempI = i + 1;
-                            while (tempI < originalWords.length) {
-                                if (correctedWords[j] === originalWords[tempI]) {
-                                    for (let k = i; k < tempI; k++) {
-                                        // We don't display deleted words in red, but we need to advance the index.
-                                    }
-                                    i = tempI;
-                                    originalFound = true;
-                                    break;
-                                }
-                                tempI++;
-                            }
-
-                            if (!originalFound && !correctedFound) {
-                                htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
-                                i++;
-                                j++;
+                            } else {
+                                htmlOutput += `<span class="text-red-500 font-bold">${originalWords[i]}</span> `;
                             }
                         }
                     }
 
-                    // Append any remaining corrected words
+                    // Append any remaining corrected words that were additions at the end
                     while (j < correctedWords.length) {
-                        htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
-                        j++;
+                         htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
+                         j++;
                     }
                     
                     correctedTextOutput.innerHTML = htmlOutput.trim();
@@ -696,4 +672,3 @@
 
 </body>
 </html>
-
