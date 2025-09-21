@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پوستر یادگیری زبان کوردی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f0f4f8;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ea/Taq-e_Bostan.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent overlay for readability */
+            z-index: 1;
+        }
+        .poster-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            z-index: 2;
+        }
+        .header-box {
+            background: linear-gradient(to right, #008852, #e0e0e0, #ee1b24);
+            background-size: 200% 100%;
+            animation: flag-gradient 5s ease-in-out infinite;
+            border-radius: 1rem;
+            padding: 1.5rem 2.5rem;
+            text-align: center;
+            color: #1f2937;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-box p {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1a202c;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-text {
+            line-height: 2rem;
+            text-align: justify;
+            color: #4b5563;
+        }
+
+        .sub-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-top: 1.5rem;
+        }
+
+        .list-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            text-align: right;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f7fafc;
+            font-weight: bold;
+            color: #333;
+        }
+        .audio-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+            display: inline-block;
+        }
+        .audio-button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            fill: #333;
+        }
+        
+        .footer-note {
+            background-color: #f1f5f9;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        .forbidden-chars {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        .footer-banner {
+            background-color: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2.5rem;
+            border-radius: 1rem;
+        }
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .qr-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .qr-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fafafa;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .qr-item p {
+            margin-top: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .api-section {
+            background-color: #e3f2fd;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .api-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        .convert-button {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .convert-button:hover {
+            background-color: #1e40af;
+        }
+
+        @keyframes flag-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 640px) {
+            .poster-container {
+                padding: 1rem;
+            }
+            .header-box p {
+                font-size: 1.25rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .qr-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="poster-container">
+    <div class="header-box">
+        <p class="text-3xl">
+            زمانی دایک ناسنامه‌ی ئێمەیە! وەرن با بە دە خولەک
+            <br>
+            نووسینی کوردی فێربین و کەسانی تریش فێر بکەین!
+        </p>
+    </div>
+
+    <h2 class="section-title">وانەی یەک</h2>
+    <p class="section-text text-base">
+        <strong>ئەو وانەیە تایبەتە بە کوردانی ڕۆژهەڵات  کە حەز بە فێربوونی نووسین بە کوردی دەکەن</strong>
+    </p>
+
+    <p class="section-text mt-4">
+        <strong>دست به کار شو! همین حالا!</strong> با اضافه کردن کیبورد زبان کوردی به گوشی هوشمند و مطالعه تنها این یک صفحه شما قادر خواهید بود به زبان کوردی درست بنویسید. از تایپ پیام یا متن کوردی با استفاده از فونت یا کیبورد فارسی دست برداریم!
+    </p>
+
+    <p class="section-text mt-4">
+        از آنجایی که شما خودتان کوردزبان هستید و با الفبای فارسی نیز آشنایی کامل دارید، یادگیری نوشتار کوردی برایتان بسیار آسان خواهد بود، چون بیشتر حروف الفبا مشترک هستند. فقط کافیست به چند تفاوت کلیدی در الفبا توجه کنید.
+    </p>
+
+    <h3 class="sub-title">۱. حروف مشترک (بخش بزرگی از الفبا):</h3>
+    <p class="section-text">
+        بیشتر حروفی که در فارسی استفاده می‌کنید، در زبان کوردی نیز با همان شکل و صدا وجود دارند. مانند:
+        <br>
+        ا، ب، پ، ت، ج، چ، ح، خ، د، ز، ژ، س، ش، ع، غ، ف، ق، ک، گ، ل، م، ن، هـ، ی.
+    </p>
+
+    <h3 class="sub-title">۲. حروف کوردی که متفاوت از حروف فارسی نوشته یا تلفظ می شوند:</h3>
+    <p class="section-text">
+        - در زبان کوردی، تمام حروف صدادار (مصوت‌ها) به صورت یک حرف کامل نوشته می‌شوند و برخلاف فارسی، از اعراب (فتحه، کسره، ضمه) استفاده نمی‌شود. این کار خواندن کلمات را بسیار آسان‌تر می‌کند.
+    </p>
+
+    <h3 class="sub-title">جدول حروف متفاوت از الفبای فارسی</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>فارسی (با اعراب)</th>
+                <th>کوردی (بدون نیاز به اعراب)</th>
+                <th>توضیح</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>اَحمَد</td>
+                <td>ئەحمەد <button class="audio-button" data-word="ئەحمەد"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>صدای فتحه (ـَ) با « ە » در آغاز کلمه و «ــە» در مابین یا آخر کلمات نوشته می شود .</td>
+            </tr>
+            <tr>
+                <td>سُهراب</td>
+                <td>سۆهراب <button class="audio-button" data-word="سۆهراب"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>صدای ضمه (ـُ) به صورت حرف و با «ۆ» نشان داده می شود .</td>
+            </tr>
+            <tr>
+                <td>بِهزاد</td>
+                <td>بێهزاد <button class="audio-button" data-word="بێهزاد"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>صدای کسره (ـِ) با حرفی به شکل «ێ» نوشته می شود اما در کوردی کشیده تر تلفظ می شود</td>
+            </tr>
+            <tr>
+                <td>آزادی</td>
+                <td>ئازادی <button class="audio-button" data-word="ئازادی"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>الف همزه در اول کلمات به صورت « ئـ » نوشته می شود.</td>
+            </tr>
+            <tr>
+                <td>پروژه</td>
+                <td>پڕۆژە <button class="audio-button" data-word="پڕۆژە"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>« ڕ » (رایِ لرزشی): این «ر» به صورت لرزشی و با شدت بیشتری تلفظ می‌شود.</td>
+            </tr>
+            <tr>
+                <td>تلویزیون</td>
+                <td>تەلەڤیزیۆن <button class="audio-button" data-word="تەلەڤیزیۆن"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>ڤ (ڤـ): این حرف دقیقاً صدای حرف "V" در انگلیسی را می‌دهد.</td>
+            </tr>
+            <tr>
+                <td>پرچم</td>
+                <td>ئاڵا <button class="audio-button" data-word="ئاڵا"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>ڵ (لام غلیظ): این حرف، صدای لام را به صورت غلیظ‌تر و پرحجم‌تر تلفظ می‌کند.</td>
+            </tr>
+            <tr>
+                <td>نوشتن</td>
+                <td>نووسین <button class="audio-button" data-word="نووسین"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.47 7-8.77s-2.99-7.86-7-8.77z"/></svg></button></td>
+                <td>وو (اویِ کشیده): این هم یک حرف صدادار بلند است که صدایی شبیه به  دو"O" پشت سر هم  در انگلیسی می‌دهد. مثل «oo »  در "Book"</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3 class="sub-title mt-4">۴. حروفی که در کوردی استفاده نمی‌شوند:</h3>
+    <div class="footer-note">
+        <div class="forbidden-chars">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle text-red-500" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            <p class="text-lg">ث، ص، ض، ط، ظ</p>
+        </div>
+        <div>
+            <p class="section-text">
+                حروف عربی مانند <strong>(ث، ح، ذ، ص، ض، ط، ظ)</strong> در نوشتار استاندارد کوردی استفاده نمی‌شوند و به‌جای آن‌ها از معادل‌های ساده‌تر آوایی استفاده می‌شود:
+            </p>
+            <ul class="list-disc list-inside">
+                <li>به جای «ث، ص، س» از «س» استفاده می‌شود.</li>
+                <li>به جای «ذ، ز، ض، ظ» از «ز» استفاده می‌شود.</li>
+                <li>به جای «ط» از «ت» استفاده می‌شود.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 class="sub-title mt-4">نکات پایانی برای تمرین:</h3>
+    <ul class="list-decimal list-inside section-text">
+        <li class="list-item"><strong>به صداها فکر کنید:</strong> به جای فکر کردن به املای فارسی، به صدایِ کلمه کوردی گوش دهید و حرفِ کوردیِ معادلِ آن صدا را بنویسید.</li>
+        <li class="list-item"><strong>خواندن را شروع کنید:</strong> شروع به خواندن متن‌های ساده کوردی (اخبار، داستان کوتاه) کنید. این کار چشم شما را به شکل کلمات عادت می‌دهد.</li>
+        <li class="list-item"><strong>تمرین نوشتن کنید:</strong> کلمات و جملات ساده را بنویسید تا دستتان روان شود.</li>
+    </ul>
+
+    <p class="section-text mt-4">
+        شما با دانستن الفبای فارسی یا عربی، ۹۰٪ حروف الفبای کوردی (رسم الخط آرامی) را نیز آموخته اید!  با کمی تمرین روی این چند تفاوت کلیدی، به سرعت می‌توانید به زبان مادری خود روان و صحیح بنویسید و بخوانید.
+    </p>
+
+    <div class="api-section">
+        <h3 class="api-title">مبدل نوشتار کوردی ✨</h3>
+        <p class="text-gray-600 mb-4 text-center">هر کلمه یا عبارت فارسی را وارد کنید تا به صورت خودکار به خط کوردی تبدیل شود.</p>
+        <div class="flex flex-col md:flex-row items-center gap-4">
+            <input type="text" id="persianInput" placeholder="متن فارسی را اینجا وارد کنید..." class="flex-grow w-full md:w-auto px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="convertBtn" class="convert-button">
+                <span>تبدیل</span>
+                <span id="convertSpinner" class="hidden loading-spinner"></span>
+            </button>
+        </div>
+        <div class="mt-4 p-4 bg-white rounded-md border border-gray-200">
+            <p class="font-bold text-gray-800">متن کوردی:</p>
+            <p id="kurdishOutput" class="mt-2 text-xl font-vazirmatn text-green-700"></p>
+            <div id="outputSpinner" class="hidden loading-spinner mt-2"></div>
+        </div>
+        <div class="mt-2 text-center">
+            <button id="speakOutputBtn" class="convert-button bg-gray-600 hover:bg-gray-700">
+                <span>تلفظ کن ✨</span>
+            </button>
+            <div id="speakSpinner" class="hidden loading-spinner mt-2"></div>
+        </div>
+    </div>
+    
+    <div class="qr-section">
+        <h3 class="sub-title">کیبورد کوردی را نصب کنید</h3>
+        <p class="section-text">
+            برای شروع، Gboard (کیبورد گوگل) را نصب کنید. این کیبورد زبان کوردی را پشتیبانی می‌کند.
+        </p>
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin&size=120x120" width="120" height="120" alt="QR Code for Gboard on Android">
+                <p>برای اندروید</p>
+            </div>
+            <div class="qr-item">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://apps.apple.com/us/app/gboard-the-google-keyboard/id1091778112" width="120" height="120" alt="QR Code for Gboard on iOS">
+                <p>برای iOS</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer-banner">
+        <p class="text-sm">حالا شما آماده‌اید! تمرین کنید و از زبان مادری لذت ببرید.</p>
+        <p class="text-xs mt-1">(طراحی شده توسط: [نام شما])</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Gemini API configuration
+        const API_KEY = "";
+        const CONVERT_MODEL = "gemini-2.5-flash-preview-05-20";
+        const TTS_MODEL = "gemini-2.5-flash-preview-tts";
+        const CONVERT_URL = `https://generativelanguage.googleapis.com/v1beta/models/${CONVERT_MODEL}:generateContent?key=${API_KEY}`;
+        const TTS_URL = `https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL}:generateContent?key=${API_KEY}`;
+        const RETRY_COUNT = 3;
+        const RETRY_DELAY = 1000;
+
+        const convertBtn = document.getElementById('convertBtn');
+        const speakOutputBtn = document.getElementById('speakOutputBtn');
+        const persianInput = document.getElementById('persianInput');
+        const kurdishOutput = document.getElementById('kurdishOutput');
+        const outputSpinner = document.getElementById('outputSpinner');
+        const speakSpinner = document.getElementById('speakSpinner');
+        const audioButtons = document.querySelectorAll('.audio-button');
+
+        // Helper function for exponential backoff retry
+        async function fetchWithRetry(url, options, retries = RETRY_COUNT) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                if (retries === 0) {
+                    throw error;
+                }
+                console.warn(`Fetch failed, retrying in ${RETRY_DELAY}ms...`);
+                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+                return fetchWithRetry(url, options, retries - 1);
+            }
+        }
+
+        // Helper function to convert base64 PCM to WAV Blob
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function pcmToWav(pcm16, sampleRate) {
+            const pcmData = pcm16.buffer;
+            const dataLength = pcmData.byteLength;
+            const buffer = new ArrayBuffer(44 + dataLength);
+            const view = new DataView(buffer);
+            let offset = 0;
+
+            function writeString(str) {
+                for (let i = 0; i < str.length; i++) {
+                    view.setUint8(offset + i, str.charCodeAt(i));
+                }
+                offset += str.length;
+            }
+
+            function writeUint32(val) {
+                view.setUint32(offset, val, true);
+                offset += 4;
+            }
+
+            function writeUint16(val) {
+                view.setUint16(offset, val, true);
+                offset += 2;
+            }
+
+            writeString('RIFF');
+            writeUint32(36 + dataLength);
+            writeString('WAVE');
+            writeString('fmt ');
+            writeUint32(16);
+            writeUint16(1); // PCM format
+            writeUint16(1); // Mono
+            writeUint32(sampleRate);
+            writeUint32(sampleRate * 2); // Byte rate
+            writeUint16(2); // Block align
+            writeUint16(16); // Bits per sample
+            writeString('data');
+            writeUint32(dataLength);
+
+            const pcmBytes = new Uint8Array(pcmData);
+            for (let i = 0; i < dataLength; i++) {
+                view.setUint8(offset + i, pcmBytes[i]);
+            }
+            return new Blob([view], { type: 'audio/wav' });
+        }
+        
+        // Function to handle speech synthesis
+        async function speakText(text) {
+            if (!text) {
+                return;
+            }
+            speakSpinner.classList.remove('hidden');
+
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: text
+                    }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: {
+                                voiceName: "Kore"
+                            }
+                        }
+                    }
+                },
+                model: TTS_MODEL
+            };
+
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+            
+            try {
+                const result = await fetchWithRetry(TTS_URL, options);
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                } else {
+                    kurdishOutput.textContent = "خطا در دریافت صدا. لطفاً دوباره تلاش کنید.";
+                }
+            } catch (error) {
+                console.error("Error with TTS API:", error);
+                kurdishOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
+            } finally {
+                speakSpinner.classList.add('hidden');
+            }
+        }
+
+        // Event listener for converting text
+        convertBtn.addEventListener('click', async () => {
+            const input = persianInput.value.trim();
+            if (!input) {
+                kurdishOutput.textContent = "";
+                return;
+            }
+
+            convertBtn.disabled = true;
+            outputSpinner.classList.remove('hidden');
+
+            const prompt = `متن فارسی زیر را به خط کردی استاندارد سورانی ترجمه کن. فقط متن تبدیل شده را بنویس و هیچ توضیح اضافه‌ای نده. متن: ${input}`;
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }]
+            };
+
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            };
+
+            try {
+                const result = await fetchWithRetry(CONVERT_URL, options);
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) {
+                    kurdishOutput.textContent = text.trim();
+                } else {
+                    kurdishOutput.textContent = "خطا در تبدیل. لطفاً دوباره تلاش کنید.";
+                }
+            } catch (error) {
+                console.error("Error with conversion API:", error);
+                kurdishOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
+            } finally {
+                convertBtn.disabled = false;
+                outputSpinner.classList.add('hidden');
+            }
+        });
+
+        // Event listener for speaking the converted text
+        speakOutputBtn.addEventListener('click', () => {
+            const textToSpeak = kurdishOutput.textContent.trim();
+            if (textToSpeak) {
+                speakText(textToSpeak);
+            }
+        });
+
+        // Event listeners for table audio buttons
+        audioButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const word = button.dataset.word;
+                speakText(word);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
