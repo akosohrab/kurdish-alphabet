@@ -42,12 +42,18 @@
             overflow: hidden;
             border: 2px solid #e2e8f0;
             z-index: 2;
+            padding-top: 10rem; /* Space for the fixed header */
         }
         .header-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
             background: linear-gradient(to right, #008852, #e0e0e0, #ee1b24);
             background-size: 200% 100%;
             animation: flag-gradient 5s ease-in-out infinite;
-            border-radius: 1rem;
+            border-radius: 0 0 1.5rem 1.5rem;
             padding: 1.5rem 2.5rem;
             text-align: center;
             color: #1f2937;
@@ -250,20 +256,14 @@
 </head>
 <body>
 
-<div class="poster-container">
-    <div class="header-box">
-        <p class="text-3xl">
-            زمانی دایک ناسنامه‌ی ئێمەیە! وەرن با بە دە خولەک
-            <br>
-            نووسینی کوردی فێربین و کەسانی تریش فێر بکەین!
-        </p>
-    </div>
-
-    <h2 class="section-title">وانەی یەک</h2>
+<div class="header-box">
+    <h2 class="section-title mt-0">وانەی یەک</h2>
     <p class="section-text text-base">
         <strong>ئەو وانەیە تایبەتە بە کوردانی ڕۆژهەڵات  کە حەز بە فێربوونی نووسین بە کوردی دەکەن</strong>
     </p>
+</div>
 
+<div class="poster-container">
     <p class="section-text mt-4">
         <strong>دست به کار شو! همین حالا!</strong> با اضافه کردن کیبورد زبان کوردی به گوشی هوشمند و مطالعه تنها این یک صفحه شما قادر خواهید بود به زبان کوردی درست بنویسید. از تایپ پیام یا متن کوردی با استفاده از فونت یا کیبورد فارسی دست برداریم!
     </p>
@@ -368,21 +368,17 @@
     <p class="section-text mt-4">
         شما با دانستن الفبای فارسی یا عربی، ۹۰٪ حروف الفبای کوردی (رسم الخط آرامی) را نیز آموخته اید!  با کمی تمرین روی این چند تفاوت کلیدی، به سرعت می‌توانید به زبان مادری خود روان و صحیح بنویسید و بخوانید.
     </p>
-
+    
     <div class="api-section">
-        <h3 class="api-title">مبدل نوشتار کوردی ✨</h3>
-        <p class="text-gray-600 mb-4 text-center">هر کلمه یا عبارت فارسی را وارد کنید تا به صورت خودکار به خط کوردی تبدیل شود.</p>
+        <h3 class="api-title">ابزار تمرین کوردی ✨</h3>
+        <p class="text-gray-600 mb-4 text-center">هر کلمه یا عبارت کوردی را بنویسید تا هوش مصنوعی اشتباهات املایی شما را مشخص کند.</p>
         <div class="flex flex-col md:flex-row items-center gap-4">
-            <input type="text" id="persianInput" placeholder="متن فارسی را اینجا وارد کنید..." class="flex-grow w-full md:w-auto px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button id="convertBtn" class="convert-button">
-                <span>تبدیل</span>
-                <span id="convertSpinner" class="hidden loading-spinner"></span>
-            </button>
+            <textarea id="kurdishPracticeInput" placeholder="متن کوردی را اینجا بنویسید..." class="flex-grow w-full md:w-auto px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
         </div>
-        <div class="mt-4 p-4 bg-white rounded-md border border-gray-200">
-            <p class="font-bold text-gray-800">متن کوردی:</p>
-            <p id="kurdishOutput" class="mt-2 text-xl font-vazirmatn text-green-700"></p>
-            <div id="outputSpinner" class="hidden loading-spinner mt-2"></div>
+        <div class="mt-4 p-4 bg-white rounded-md border border-gray-200 min-h-[5rem]">
+            <p class="font-bold text-gray-800">نوشتار صحیح:</p>
+            <div id="correctedTextOutput" class="mt-2 text-xl font-vazirmatn text-green-700 leading-10"></div>
+            <div id="practiceSpinner" class="hidden loading-spinner mt-2 mx-auto"></div>
         </div>
         <div class="mt-2 text-center">
             <button id="speakOutputBtn" class="convert-button bg-gray-600 hover:bg-gray-700">
@@ -411,8 +407,8 @@
 
 
     <div class="footer-banner">
-        <p class="text-sm">حالا شما آماده‌اید! تمرین کنید و از زبان مادری لذت ببرید.</p>
-        <p class="text-xs mt-1">(طراحی شده توسط: [نام شما])</p>
+        <p class="text-sm">حالا شما برای یادگیری بهتر تنها به تمرین بیشتر نیاز دارید.</p>
+        <p class="text-xs mt-1">توسعه دهنده: سهراب احمدیان</p>
     </div>
 </div>
 
@@ -427,13 +423,13 @@
         const RETRY_COUNT = 3;
         const RETRY_DELAY = 1000;
 
-        const convertBtn = document.getElementById('convertBtn');
-        const speakOutputBtn = document.getElementById('speakOutputBtn');
-        const persianInput = document.getElementById('persianInput');
-        const kurdishOutput = document.getElementById('kurdishOutput');
-        const outputSpinner = document.getElementById('outputSpinner');
-        const speakSpinner = document.getElementById('speakSpinner');
+        const kurdishPracticeInput = document.getElementById('kurdishPracticeInput');
+        const correctedTextOutput = document.getElementById('correctedTextOutput');
+        const practiceSpinner = document.getElementById('practiceSpinner');
         const audioButtons = document.querySelectorAll('.audio-button');
+        const speakOutputBtn = document.getElementById('speakOutputBtn');
+        const speakSpinner = document.getElementById('speakSpinner');
+        let debounceTimer;
 
         // Helper function for exponential backoff retry
         async function fetchWithRetry(url, options, retries = RETRY_COUNT) {
@@ -557,28 +553,27 @@
                     const audio = new Audio(audioUrl);
                     audio.play();
                 } else {
-                    kurdishOutput.textContent = "خطا در دریافت صدا. لطفاً دوباره تلاش کنید.";
+                    correctedTextOutput.textContent = "خطا در دریافت صدا. لطفاً دوباره تلاش کنید.";
                 }
             } catch (error) {
                 console.error("Error with TTS API:", error);
-                kurdishOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
+                correctedTextOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
             } finally {
                 speakSpinner.classList.add('hidden');
             }
         }
 
-        // Event listener for converting text
-        convertBtn.addEventListener('click', async () => {
-            const input = persianInput.value.trim();
-            if (!input) {
-                kurdishOutput.textContent = "";
+        // Function to check and correct Kurdish spelling
+        async function checkKurdishSpelling(text) {
+            if (!text || text.trim() === "") {
+                correctedTextOutput.innerHTML = "";
                 return;
             }
 
-            convertBtn.disabled = true;
-            outputSpinner.classList.remove('hidden');
-
-            const prompt = `متن فارسی زیر را به خط کردی استاندارد سورانی ترجمه کن. فقط متن تبدیل شده را بنویس و هیچ توضیح اضافه‌ای نده. متن: ${input}`;
+            practiceSpinner.classList.remove('hidden');
+            
+            // A more robust prompt to get only the corrected text.
+            const prompt = `متن کوردی زیر را از نظر املایی بررسی و به خط کوردی استاندارد سورانی اصلاح کن. تنها متن صحیح را بنویس و هیچ توضیح اضافه‌ای نده. متن: ${text}`;
             const payload = {
                 contents: [{
                     parts: [{
@@ -595,24 +590,41 @@
 
             try {
                 const result = await fetchWithRetry(CONVERT_URL, options);
-                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (text) {
-                    kurdishOutput.textContent = text.trim();
+                const correctedText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (correctedText) {
+                    const originalWords = text.trim().split(/\s+/);
+                    const correctedWords = correctedText.trim().split(/\s+/);
+                    let htmlOutput = '';
+                    // Compare original words with corrected words to highlight differences
+                    for (let i = 0; i < correctedWords.length; i++) {
+                        if (originalWords[i] && originalWords[i] !== correctedWords[i]) {
+                            htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[i]}</span> `;
+                        } else {
+                            htmlOutput += `${correctedWords[i]} `;
+                        }
+                    }
+                    correctedTextOutput.innerHTML = htmlOutput.trim();
                 } else {
-                    kurdishOutput.textContent = "خطا در تبدیل. لطفاً دوباره تلاش کنید.";
+                    correctedTextOutput.textContent = "خطا در بررسی املا. لطفاً دوباره تلاش کنید.";
                 }
             } catch (error) {
-                console.error("Error with conversion API:", error);
-                kurdishOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
+                console.error("Error with spelling check API:", error);
+                correctedTextOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
             } finally {
-                convertBtn.disabled = false;
-                outputSpinner.classList.add('hidden');
+                practiceSpinner.classList.add('hidden');
             }
+        }
+
+        kurdishPracticeInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                checkKurdishSpelling(kurdishPracticeInput.value);
+            }, 500); // 500ms debounce
         });
 
         // Event listener for speaking the converted text
         speakOutputBtn.addEventListener('click', () => {
-            const textToSpeak = kurdishOutput.textContent.trim();
+            const textToSpeak = correctedTextOutput.textContent.trim();
             if (textToSpeak) {
                 speakText(textToSpeak);
             }
