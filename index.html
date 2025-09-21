@@ -265,7 +265,7 @@
 <div class="header-box">
     <h1>ئەم لاپەڕەیە تایبەتە بە کوردانی ڕۆژهەڵات کە حەز دەکەن فێربن بە ڕێنووسی کوردی بنووسن.</h1>
     <p class="text-sm">یک خودآموز سریع برای یادگیری رسم‌الخط کوردی. اگر الفبای فارسی را بلدید، با این راهنما می‌توانید در چند دقیقه، نوشتن به زبان کوردی را شروع کنید</p>
-    <p>نووسین و گەشەپێدان: سۆهراب ئەحمەدیان</p>
+    <p>تحقیق و توسعه: سهراب احمدیان</p>
 </div>
 
 <div class="poster-container">
@@ -418,7 +418,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Gemini API configuration
-        const API_KEY = "";
+        // !!! IMPORTANT: Replace "AIzaSyCjAwM4112YqY2bpYNXN1D1MfVe-uRk_3E" with your actual API key
+        // Get your free API key from Google AI Studio: https://aistudio.google.com/app/apikey
+        const API_KEY = "AIzaSyCjAwM4112YqY2bpYNXN1D1MfVe-uRk_3E";
         const CONVERT_MODEL = "gemini-2.5-flash-preview-05-20";
         const TTS_MODEL = "gemini-2.5-flash-preview-tts";
         const CONVERT_URL = `https://generativelanguage.googleapis.com/v1beta/models/${CONVERT_MODEL}:generateContent?key=${API_KEY}`;
@@ -526,7 +528,7 @@
                     speechConfig: {
                         voiceConfig: {
                             prebuiltVoiceConfig: {
-                                voiceName: "Kore"
+                                voiceName: "Iapetus" // Changed voice for better pronunciation
                             }
                         }
                     }
