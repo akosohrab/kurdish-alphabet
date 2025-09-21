@@ -51,8 +51,6 @@
             right: 0;
             z-index: 10;
             background: linear-gradient(to right, #008852, #e0e0e0, #ee1b24);
-            background-size: 200% 100%;
-            animation: flag-gradient 5s ease-in-out infinite;
             border-radius: 0 0 1.5rem 1.5rem;
             padding: 1.5rem 2.5rem;
             text-align: center;
@@ -257,9 +255,14 @@
 <body>
 
 <div class="header-box">
-    <h2 class="section-title mt-0">وانەی یەک</h2>
+    <h2 class="section-title mt-0">وانەی خێرا</h2>
     <p class="section-text text-base">
-        <strong>ئەو وانەیە تایبەتە بە کوردانی ڕۆژهەڵات  کە حەز بە فێربوونی نووسین بە کوردی دەکەن</strong>
+    <strong>ئەم لاپەڕەیە تایبەتە بە کوردانی ڕۆژهەڵات کە حەز دەکەن فێربن بە ڕێنووسی کوردی بنووسن
+        نووسین و گەشەپێدان: سۆهراب ئەحمەدیان
+
+
+
+ 
     </p>
 </div>
 
@@ -339,16 +342,9 @@
     
     <h3 class="sub-title mt-4">۴. حروفی که در کوردی استفاده نمی‌شوند:</h3>
     <div class="footer-note">
-        <div class="forbidden-chars">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle text-red-500" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-            </svg>
-            <p class="text-lg">ث، ص، ض، ط، ظ</p>
-        </div>
         <div>
             <p class="section-text">
-                حروف عربی مانند <strong>(ث، ح، ذ، ص، ض، ط، ظ)</strong> در نوشتار استاندارد کوردی استفاده نمی‌شوند و به‌جای آن‌ها از معادل‌های ساده‌تر آوایی استفاده می‌شود:
+                حروف عربی مانند (ث، ح، ذ، ص، ض، ط، ظ) در نوشتار استاندارد کوردی استفاده نمی‌شوند و به‌جای آن‌ها از معادل‌های ساده‌تر آوایی استفاده می‌شود:
             </p>
             <ul class="list-disc list-inside">
                 <li>به جای «ث، ص، س» از «س» استفاده می‌شود.</li>
@@ -371,9 +367,14 @@
     
     <div class="api-section">
         <h3 class="api-title">ابزار تمرین کوردی ✨</h3>
-        <p class="text-gray-600 mb-4 text-center">هر کلمه یا عبارت کوردی را بنویسید تا هوش مصنوعی اشتباهات املایی شما را مشخص کند.</p>
+        <p class="text-gray-600 mb-4 text-center"> کلمه یا جملاتی را به کوردی بنویس و دکمه **بررسی** را بزن تا هوش مصنوعی اشتباهات املایی شما را مشخص کند.</p>
         <div class="flex flex-col md:flex-row items-center gap-4">
             <textarea id="kurdishPracticeInput" placeholder="متن کوردی را اینجا بنویسید..." class="flex-grow w-full md:w-auto px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+        </div>
+        <div class="mt-2 text-center">
+            <button id="checkButton" class="convert-button bg-blue-600 hover:bg-blue-700">
+                <span>بررسی</span>
+            </button>
         </div>
         <div class="mt-4 p-4 bg-white rounded-md border border-gray-200 min-h-[5rem]">
             <p class="font-bold text-gray-800">نوشتار صحیح:</p>
@@ -429,7 +430,7 @@
         const audioButtons = document.querySelectorAll('.audio-button');
         const speakOutputBtn = document.getElementById('speakOutputBtn');
         const speakSpinner = document.getElementById('speakSpinner');
-        let debounceTimer;
+        const checkButton = document.getElementById('checkButton');
 
         // Helper function for exponential backoff retry
         async function fetchWithRetry(url, options, retries = RETRY_COUNT) {
@@ -563,7 +564,7 @@
             }
         }
 
-        // Function to check and correct Kurdish spelling
+        // Function to check and correct Kurdish spelling and grammar
         async function checkKurdishSpelling(text) {
             if (!text || text.trim() === "") {
                 correctedTextOutput.innerHTML = "";
@@ -572,8 +573,8 @@
 
             practiceSpinner.classList.remove('hidden');
             
-            // A more robust prompt to get only the corrected text.
-            const prompt = `متن کوردی زیر را از نظر املایی بررسی و به خط کوردی استاندارد سورانی اصلاح کن. تنها متن صحیح را بنویس و هیچ توضیح اضافه‌ای نده. متن: ${text}`;
+            // The prompt has been updated to request grammatical corrections as well.
+            const prompt = `متن کوردی زیر را از نظر املایی و دستوری بررسی و به خط کوردی استاندارد سورانی اصلاح کن. اگر کلمات یا حروف اضافه دستوری کم بود، آن‌ها را اضافه کن. تنها متن صحیح و کامل را بنویس و هیچ توضیح اضافه‌ای نده. متن: ${text}`;
             const payload = {
                 contents: [{
                     parts: [{
@@ -596,14 +597,67 @@
                     const correctedWords = correctedText.trim().split(/\s+/);
                     let htmlOutput = '';
                     // Compare original words with corrected words to highlight differences
-                    for (let i = 0; i < correctedWords.length; i++) {
-                        if (originalWords[i] && originalWords[i] !== correctedWords[i]) {
-                            htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[i]}</span> `;
+                    let i = 0, j = 0;
+                    while (i < originalWords.length && j < correctedWords.length) {
+                        if (originalWords[i] === correctedWords[j]) {
+                            htmlOutput += `${correctedWords[j]} `;
+                            i++;
+                            j++;
                         } else {
-                            htmlOutput += `${correctedWords[i]} `;
+                            // Find the corrected word in the original text or vice versa to handle additions/deletions
+                            let originalFound = false;
+                            let correctedFound = false;
+                            
+                            // Check if the original word is found later in the corrected text
+                            let tempJ = j + 1;
+                            while (tempJ < correctedWords.length) {
+                                if (originalWords[i] === correctedWords[tempJ]) {
+                                    for (let k = j; k < tempJ; k++) {
+                                        htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[k]}</span> `;
+                                    }
+                                    j = tempJ;
+                                    correctedFound = true;
+                                    break;
+                                }
+                                tempJ++;
+                            }
+
+                            // If not found, it must be an addition
+                            if (!correctedFound) {
+                                htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
+                                j++;
+                            }
+                            
+                            // Check if the corrected word is found later in the original text
+                            let tempI = i + 1;
+                            while (tempI < originalWords.length) {
+                                if (correctedWords[j] === originalWords[tempI]) {
+                                    for (let k = i; k < tempI; k++) {
+                                        // We don't display deleted words in red, but we need to advance the index.
+                                    }
+                                    i = tempI;
+                                    originalFound = true;
+                                    break;
+                                }
+                                tempI++;
+                            }
+
+                            if (!originalFound && !correctedFound) {
+                                htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
+                                i++;
+                                j++;
+                            }
                         }
                     }
+
+                    // Append any remaining corrected words
+                    while (j < correctedWords.length) {
+                        htmlOutput += `<span class="text-red-500 font-bold">${correctedWords[j]}</span> `;
+                        j++;
+                    }
+                    
                     correctedTextOutput.innerHTML = htmlOutput.trim();
+
                 } else {
                     correctedTextOutput.textContent = "خطا در بررسی املا. لطفاً دوباره تلاش کنید.";
                 }
@@ -615,11 +669,9 @@
             }
         }
 
-        kurdishPracticeInput.addEventListener('input', () => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                checkKurdishSpelling(kurdishPracticeInput.value);
-            }, 500); // 500ms debounce
+        checkButton.addEventListener('click', () => {
+            const text = kurdishPracticeInput.value;
+            checkKurdishSpelling(text);
         });
 
         // Event listener for speaking the converted text
