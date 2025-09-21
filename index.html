@@ -248,8 +248,11 @@
             .poster-container {
                 padding: 1rem;
             }
+            .header-box h1 {
+                font-size: 1rem;
+            }
             .header-box p {
-                font-size: 1.25rem;
+                font-size: 0.65rem;
             }
             .section-title {
                 font-size: 1.5rem;
@@ -418,7 +421,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Gemini API configuration
-        // !!! IMPORTANT: Replace "AIzaSyCjAwM4112YqY2bpYNXN1D1MfVe-uRk_3E" with your actual API key
+        // !!! IMPORTANT: Replace "" with your actual API key
         // Get your free API key from Google AI Studio: https://aistudio.google.com/app/apikey
         const API_KEY = "AIzaSyCjAwM4112YqY2bpYNXN1D1MfVe-uRk_3E";
         const CONVERT_MODEL = "gemini-2.5-flash-preview-05-20";
@@ -458,7 +461,7 @@
         function base64ToArrayBuffer(base64) {
             const binaryString = atob(base64);
             const len = binaryString.length;
-            const bytes = new Uint8Array(len);
+            const bytes = new Uint8_t array(len);
             for (let i = 0; i < len; i++) {
                 bytes[i] = binaryString.charCodeAt(i);
             }
@@ -503,7 +506,7 @@
             writeString('data');
             writeUint32(dataLength);
 
-            const pcmBytes = new Uint8Array(pcmData);
+            const pcmBytes = new Uint8_t array(pcmData);
             for (let i = 0; i < dataLength; i++) {
                 view.setUint8(offset + i, pcmBytes[i]);
             }
@@ -516,6 +519,7 @@
                 return;
             }
             speakSpinner.classList.remove('hidden');
+            speakOutputBtn.disabled = true;
 
             const payload = {
                 contents: [{
@@ -565,6 +569,7 @@
                 correctedTextOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
             } finally {
                 speakSpinner.classList.add('hidden');
+                speakOutputBtn.disabled = false;
             }
         }
 
@@ -576,6 +581,7 @@
             }
 
             practiceSpinner.classList.remove('hidden');
+            checkButton.disabled = true;
             
             // The prompt has been updated to request grammatical corrections as well.
             const prompt = `متن کوردی زیر را از نظر املایی و دستوری بررسی و به خط کوردی استاندارد سورانی اصلاح کن. اگر کلمات یا حروف اضافه دستوری کم بود، آن‌ها را اضافه کن. تنها متن صحیح و کامل را بنویس و هیچ توضیح اضافه‌ای نده. متن: ${text}`;
@@ -646,6 +652,7 @@
                 correctedTextOutput.textContent = "خطا در ارتباط با API. لطفاً بعداً تلاش کنید.";
             } finally {
                 practiceSpinner.classList.add('hidden');
+                checkButton.disabled = false;
             }
         }
 
