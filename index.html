@@ -11,9 +11,7 @@
             font-family: 'Vazirmatn', sans-serif;
             background-color: #f0f4f8;
             padding: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            /* حذف فلکس‌باکس از اینجا برای رفع مشکل کلیک در موبایل */
             min-height: 100vh;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/Kurdistan_Village_view.jpg');
             background-size: cover;
@@ -42,7 +40,8 @@
             overflow: hidden;
             border: 2px solid #e2e8f0;
             z-index: 2;
-            margin-top: 150px; 
+            /* استفاده از مارجین برای وسط‌چینی افقی */
+            margin: 150px auto 2rem auto; 
         }
         .header-box {
             position: fixed;
@@ -219,24 +218,25 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* <<<<<<<<<<<< بخش اصلاحات موبایل >>>>>>>>>>>> */
         @media (max-width: 640px) {
             body {
-                padding: 1rem; /* کاهش پدینگ کلی صفحه */
+                padding: 1rem 0; /* حذف پدینگ چپ و راست برای تمام صفحه شدن */
             }
             .poster-container {
                 padding: 1.5rem;
-                margin-top: 300px; /* افزایش فاصله از بالا برای جا دادن هدر */
+                margin-top: 280px; /* تنظیم مجدد فاصله از بالا */
+                margin-bottom: 2rem;
+                width: 95%; /* کمی عرض برای فاصله از لبه‌ها */
             }
             .header-box {
-                padding: 1.5rem; /* تنظیم پدینگ داخلی هدر */
+                padding: 1rem 1.5rem; 
             }
             .header-box h1 {
-                font-size: 1.1rem; /* کمی بزرگتر کردن عنوان برای خوانایی */
+                font-size: 1.1rem;
                 line-height: 1.8rem;
             }
             .header-box p {
-                font-size: 0.8rem; /* افزایش اندازه فونت زیرنویس برای خوانایی */
+                font-size: 0.8rem;
                 line-height: 1.5rem;
             }
             .section-title {
@@ -257,6 +257,7 @@
 </div>
 
 <div class="poster-container" id="posterContainer">
+    <!-- ... محتوای شما بدون تغییر ... -->
     <p class="section-text mt-4">
         زبان، اساسی‌ترین مؤلفه فرهنگی و هویت هر جامعه است. جلوگیری از فرسایش تدریجی زبان کوردی، علاوه بر ضرورت رفع قوانین و رویه‌های تبعیض‌آمیز سیستمی در سطح کلان، نیازمند تلاش‌های فردی، هرچند کوچک، از جانب هر یک از ماست.
         تبادل پیامک‌های متنی رویدادی است که همه ما روزانه آن را تجربه می‌کنیم. اما نکته قابل تأمل اینجاست که در اغلب موارد، ما از زبانی غیر از کوردی برای این ارتباطات استفاده می‌کنیم، یا زبان کوردی را به شیوه‌های نوشتاری نادرست به کار می‌بریم. بسیاری از ما به یک یا چند زبان خارجی مسلطیم، اما در نگارش به زبان مادری خود با مشکلات جدی مواجهیم.
@@ -402,6 +403,18 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // ... (کد جاوا اسکریپت بدون تغییر باقی می‌ماند)
+        const API_KEY = "YOUR_API_KEY_HERE"; // <<-- کلید API خود را جایگزین کنید
+        const checkButton = document.getElementById('checkButton');
+        const kurdishPracticeInput = document.getElementById('kurdishPracticeInput');
+        
+        async function checkKurdishSpelling(text) {
+            // ... بقیه کد جاوا اسکریپت
+        }
+
+        checkButton.addEventListener('click', () => {
+            const text = kurdishPracticeInput.value;
+            checkKurdishSpelling(text);
+        });
     });
 </script>
 
