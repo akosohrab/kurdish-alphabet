@@ -48,7 +48,7 @@
             left: 0;
             right: 0;
             z-index: 10;
-            background: linear-gradient(to right, #A63737, #F0D137, #4D8A3A);
+            background: linear-gradient(to right, #B53C14, #D9B31C, #5EA327);
             border-radius: 0 0 1.5rem 1.5rem;
             padding: 1.5rem 2.5rem;
             text-align: center;
@@ -78,6 +78,8 @@
         .level-button { background-color: #1d4ed8; }
         .advanced-level-button { background-color: #991b1b; }
         .advanced-level-button:hover { background-color: #7f1d1d; }
+        .secondary-button { background-color: #6b7280; }
+        .secondary-button:hover { background-color: #4b5563; }
         .challenge-box { background-color: #f1f5f9; border: 2px dashed #cbd5e1; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem; }
         .challenge-word { font-size: 1.8rem; font-weight: bold; color: #1e3a8a; text-align: center; line-height: 2.5rem; }
         @media (max-width: 640px) {
@@ -100,7 +102,7 @@
 <div class="poster-container" id="posterContainer">
     
     <!-- =================================================================== -->
-    <!-- ============== شروع محتوای درسنامه (بازگردانده شد) =============== -->
+    <!-- ============== شروع محتوای کامل درسنامه (بازگردانده شد) =========== -->
     <!-- =================================================================== -->
     <p class="section-text mt-4">
         زبان، اساسی‌ترین مؤلفه فرهنگی و هویت هر جامعه است. جلوگیری از فرسایش تدریجی زبان کوردی، علاوه بر ضرورت رفع قوانین و رویه‌های تبعیض‌آمیز سیستمی در سطح کلان، نیازمند تلاش‌های فردی، هرچند کوچک، از جانب هر یک از ماست.
@@ -124,8 +126,8 @@
     <table>
         <thead>
             <tr>
-                <th>فارسی (با اعراب)</th>
-                <th>کوردی (بدون نیاز به اعراب)</th>
+                <th>فارسی </th>
+                <th>کوردی</th>
                 <th>توضیح</th>
             </tr>
         </thead>
@@ -185,9 +187,10 @@
             
             <textarea id="dictationInput" placeholder="پاسخ خود را اینجا تایپ کنید..." class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
             
-            <div class="mt-4 flex justify-center items-center gap-4">
+            <div class="mt-4 flex justify-center items-center gap-4 flex-wrap">
                 <button id="checkDictationButton" class="dictation-button">بررسی پاسخ</button>
                 <button id="nextWordButton" class="dictation-button" disabled>بعدی ←</button>
+                <button id="backToMenuButton" class="dictation-button secondary-button">بازگشت به منو</button> 
             </div>
             
             <div class="mt-4 p-4 bg-white rounded-md border border-gray-200 min-h-[5rem]">
@@ -232,25 +235,23 @@
         const dictationInput = document.getElementById('dictationInput');
         const checkDictationButton = document.getElementById('checkDictationButton');
         const nextWordButton = document.getElementById('nextWordButton');
+        const backToMenuButton = document.getElementById('backToMenuButton');
         const dictationFeedback = document.getElementById('dictationFeedback');
         const dictationScore = document.getElementById('dictationScore');
 
-        // ==========================================================
-        // ============== بانک کلمات با سطح پیشرفته کامل ============
-        // ==========================================================
         const wordBanks = {
             easy: [
-                { challenge: 'احمد', answer: 'ئەحمەد' }, { challenge: 'مدرسه', answer: 'مەدرەسە' }, { challenge: 'دسته', answer: 'دەستە' }, { challenge: 'سهراب', answer: 'سۆهراب' }, { challenge: 'زور', answer: 'زۆر' }, { challenge: 'سیبەر', answer: 'سێبەر' }, { challenge: 'شیر', answer: 'شێر' }, { challenge: 'آزادی', answer: 'ئازادی' }, { challenge: 'امرو', answer: 'ئەمڕۆ' }, { challenge: 'اگر', answer: 'ئەگەر' }
+                { challenge: 'احمد', answer: 'ئەحمەد' }, { challenge: 'مدرسه', answer: 'مەدرەسە' }, { challenge: 'دسته', answer: 'دەستە' }, { challenge: 'سهراب', answer: 'سۆهراب' }, { challenge: '(زیاد)زور', answer: 'زۆر' }, { challenge: '(سایه)سیبەر', answer:'سێبەر' }, { challenge: ' (حیوان)شیر', answer: 'شێر' }, { challenge: 'آزادی', answer: 'ئازادی' }, { challenge: '(امروز)امرو', answer: 'ئەمڕۆ' }, { challenge: 'اگر', answer: 'ئەگەر' }
             ],
             medium: [
-                { challenge: 'نوسین', answer: 'نووسین' }, { challenge: 'بوک', answer: 'بووک' }, { challenge: 'کردستان', answer: 'کوردستان' }, { challenge: 'مال', answer: 'ماڵ' }, { challenge: 'گل', answer: 'گوڵ' }, { challenge: 'سلاو', answer: 'سڵاو' }, { challenge: 'برو', answer: 'بڕۆ' }, { challenge: 'هاوری', answer: 'هاوڕێ' }, { challenge: 'ایوار', answer: 'ئێڤار' }, { challenge: 'تلویزیون', answer: 'تەلەڤیزیۆن' }
+                { challenge: 'نوسین', answer: 'نووسین' }, { challenge: 'بوک', answer: 'بووک' }, { challenge: 'کردستان', answer: 'کوردستان' }, { challenge: 'مال', answer: 'ماڵ' }, { challenge: 'گل', answer: 'گوڵ' }, { challenge: 'سلاو', answer: 'سڵاو' }, { challenge: 'برو', answer: 'بڕۆ' }, { challenge: 'هاوری', answer: 'هاوڕێ' }, { challenge: ' (عصر. گویش کرمانجی)ایوار', answer: 'ئێڤار' }, { challenge: 'تلویزیون', answer: 'تەلەڤیزیۆن' }
             ],
             hard: [
                 { challenge: 'صابون', answer: 'سابوون' }, { challenge: 'ثانیه', answer: 'سانیە' }, { challenge: 'حاضر', answer: 'حازر' }, { challenge: 'ظالم', answer: 'زاڵم' }, { challenge: 'لذت', answer: 'لێزەت' }, { challenge: 'خطر', answer: 'خەتەر' }, { challenge: 'لطفا', answer: 'لوتفەن' }, { challenge: 'مخصوص', answer: 'مەخسووس' }, { challenge: 'موضوع', answer: 'مەوزووع' }, { challenge: 'پروژه', answer: 'پڕۆژە' }
             ],
             advanced: [
-                { challenge: 'مادام هیچ شتی له مردن دربازمان ناکا.. لانیکم، با له ژیاندا خوشه ویستی فریامان کەوت. - پابلو نیرودا', answer: 'مادام هیچ شتێ لە مردن دەربازمان ناکا.. لانیکەم، با لە ژیاندا خۆشەویستی فریامان کەوێت. - پابلۆ نێرۆدا' },
-                { challenge: 'لای هلوی برزفری برزمژی، چون بژی شرطه نه وک چنده بژی - سواره ایلخانیزاده', answer: 'لای هەڵۆی بەرزەفڕی بەرزەمژی، چۆن بژی شەرتە نە وەک چەندە بژی - سوارە ئێلخانیزادە' },
+                { challenge: 'مادام هیچ شتی له مردن دربازمان ناکا.. لانیکم، با له ژیاندا خوشه ویستی فریامان کویت . - پابلو نیرودا', answer: 'مادام هیچ شتێ لە مردن دەربازمان ناکا.. لانیکەم، با لە ژیاندا خۆشەویستی فریامان کەوێت. - پابلۆ نێرۆدا' },
+                { challenge: 'لای هلوی برزفری برزمژی چون بژی شرطه نه وک چنده بژی - سواره ایلخانیزاده', answer: 'لای هەڵۆی بەرزەفڕی بەرزەمژی چۆن بژی شەرتە نە وەک چەندە بژی - سوارە ئێلخانیزادە' },
                 { challenge: 'ایمه قت داوای بختوەریمان نکردوه ته نیا رنجیکی کمتر... - چارلز بوکوفسکی', answer: 'ئێمە قەت داوای بەختەوەریمان نەکردووە، تەنیا ڕەنجێکی کەمتر... - چارڵز بۆکۆفسکی' },
                 { challenge: 'او بالندانەی ناتوانن بفرن، به قفس دلین چارنوس! - بختیار علی', answer: 'ئەو باڵندانەی ناتوانن بفڕن، بە قەفەس دەڵێن چارەنووس! - بەختیار عەلی' }
             ]
@@ -316,10 +317,15 @@
 
         function endTest() {
             const term = currentLevel === 'advanced' ? 'عبارت' : 'کلمه';
-            challengeWord.textContent = 'پایان آزمون!';
+            challengePrompt.textContent = 'پایان آزمون!';
             dictationFeedback.innerHTML = `شما به ${score} ${term} از ${currentBank.length} ${term} پاسخ صحیح دادید. برای شروع مجدد، یک سطح را انتخاب کنید.`;
             startArea.classList.remove('hidden');
             dictationArea.classList.add('hidden');
+        }
+
+        function resetTest() {
+            dictationArea.classList.add('hidden');
+            startArea.classList.remove('hidden');
         }
 
         function updateScore() {
@@ -345,7 +351,6 @@
             return resultHtml;
         }
 
-        // Event Listeners
         document.querySelectorAll('.dictation-button[data-level]').forEach(button => {
             button.addEventListener('click', (e) => {
                 const level = e.target.getAttribute('data-level');
@@ -354,11 +359,11 @@
         });
 
         checkDictationButton.addEventListener('click', checkAnswer);
-        
         nextWordButton.addEventListener('click', () => {
             currentWordIndex++;
             loadNextWord();
         });
+        backToMenuButton.addEventListener('click', resetTest);
 
         dictationInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
