@@ -48,7 +48,7 @@
             left: 0;
             right: 0;
             z-index: 10;
-            background: linear-gradient(to right, #5fad7b, #d4c166, #e68383);
+            background: linear-gradient(to right, #A63737, #F0D137, #4D8A3A);
             border-radius: 0 0 1.5rem 1.5rem;
             padding: 1.5rem 2.5rem;
             text-align: center;
@@ -75,9 +75,11 @@
         .dictation-button { background-color: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
         .dictation-button:hover { background-color: #1e40af; }
         .dictation-button:disabled { background-color: #9ca3af; cursor: not-allowed; }
-        .level-button { background-color: #1d4ed8; margin: 0 0.5rem; }
+        .level-button { background-color: #1d4ed8; }
+        .advanced-level-button { background-color: #991b1b; }
+        .advanced-level-button:hover { background-color: #7f1d1d; }
         .challenge-box { background-color: #f1f5f9; border: 2px dashed #cbd5e1; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem; }
-        .challenge-word { font-size: 2rem; font-weight: bold; color: #1e3a8a; text-align: center; letter-spacing: 2px; }
+        .challenge-word { font-size: 1.8rem; font-weight: bold; color: #1e3a8a; text-align: center; line-height: 2.5rem; }
         @media (max-width: 640px) {
             body { padding: 1rem 0; }
             .poster-container { padding: 1.5rem; margin-top: 280px; margin-bottom: 2rem; width: 95%; }
@@ -98,7 +100,7 @@
 <div class="poster-container" id="posterContainer">
     
     <!-- =================================================================== -->
-    <!-- ============== شروع محتوای درسنامه ============================== -->
+    <!-- ============== شروع محتوای درسنامه (بازگردانده شد) =============== -->
     <!-- =================================================================== -->
     <p class="section-text mt-4">
         زبان، اساسی‌ترین مؤلفه فرهنگی و هویت هر جامعه است. جلوگیری از فرسایش تدریجی زبان کوردی، علاوه بر ضرورت رفع قوانین و رویه‌های تبعیض‌آمیز سیستمی در سطح کلان، نیازمند تلاش‌های فردی، هرچند کوچک، از جانب هر یک از ماست.
@@ -122,8 +124,8 @@
     <table>
         <thead>
             <tr>
-                <th>فارسی</th>
-                <th>کوردی</th>
+                <th>فارسی (با اعراب)</th>
+                <th>کوردی (بدون نیاز به اعراب)</th>
                 <th>توضیح</th>
             </tr>
         </thead>
@@ -166,30 +168,31 @@
         <h3 class="api-title">مامۆستای ئیملا (معلم دیکته) ✨</h3>
         
         <div id="startArea" class="text-center">
-            <p class="text-gray-600 mb-4"> حالا نوبت کمی تمرین است!برای شروع آزمون املا، یک سطح را انتخاب کنید.</p>
-            <div class="flex justify-center gap-4 flex-wrap">
+            <p class="text-gray-600 mb-4">برای شروع آزمون املا، یک سطح را انتخاب کنید.</p>
+            <div class="flex justify-center gap-2 flex-wrap">
                 <button class="dictation-button level-button" data-level="easy">آسان</button>
                 <button class="dictation-button level-button" data-level="medium">متوسط</button>
                 <button class="dictation-button level-button" data-level="hard">سخت</button>
+                <button class="dictation-button advanced-level-button" data-level="advanced">پیشرفته</button>
             </div>
         </div>
         
         <div id="dictationArea" class="hidden">
-            <p class="text-gray-600 mb-2 text-center">املای صحیح کردی کلمه زیر را بنویسید:</p>
+            <p id="challengePrompt" class="text-gray-600 mb-2 text-center"></p>
             <div class="challenge-box">
                 <p id="challengeWord" class="challenge-word"></p>
             </div>
             
-            <textarea id="dictationInput" placeholder="پاسخ خود را اینجا تایپ کنید..." class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-20"></textarea>
+            <textarea id="dictationInput" placeholder="پاسخ خود را اینجا تایپ کنید..." class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
             
             <div class="mt-4 flex justify-center items-center gap-4">
                 <button id="checkDictationButton" class="dictation-button">بررسی پاسخ</button>
-                <button id="nextWordButton" class="dictation-button" disabled>کلمه بعدی ←</button>
+                <button id="nextWordButton" class="dictation-button" disabled>بعدی ←</button>
             </div>
             
             <div class="mt-4 p-4 bg-white rounded-md border border-gray-200 min-h-[5rem]">
                 <p class="font-bold text-gray-800">بازخورد:</p>
-                <div id="dictationFeedback" class="mt-2 text-2xl font-vazirmatn text-gray-800 leading-10"></div>
+                <div id="dictationFeedback" class="mt-2 text-xl font-vazirmatn text-gray-800 leading-10"></div>
             </div>
 
             <div id="dictationScore" class="mt-4 text-center font-bold text-gray-700"></div>
@@ -224,6 +227,7 @@
         
         const startArea = document.getElementById('startArea');
         const dictationArea = document.getElementById('dictationArea');
+        const challengePrompt = document.getElementById('challengePrompt');
         const challengeWord = document.getElementById('challengeWord');
         const dictationInput = document.getElementById('dictationInput');
         const checkDictationButton = document.getElementById('checkDictationButton');
@@ -232,52 +236,33 @@
         const dictationScore = document.getElementById('dictationScore');
 
         // ==========================================================
-        // ============== بانک کلمات به‌روز شده و اصلاح شده ===========
+        // ============== بانک کلمات با سطح پیشرفته کامل ============
         // ==========================================================
         const wordBanks = {
             easy: [
-                { challenge: 'احمد', answer: 'ئەحمەد' },
-                { challenge: 'مدرسه', answer: 'مەدرەسە' }, // اصلاح شده
-                { challenge: 'دسته', answer: 'دەستە' },
-                { challenge: 'سهراب', answer: 'سۆهراب' },
-                { challenge: ' (زیاد)زور', answer: 'زۆر' },
-                { challenge: ' (سایه)سیبەر', answer: 'سێبەر' },
-                { challenge: '(حیوان)شیر', answer: 'شێر' },
-                { challenge: 'آزادی', answer: 'ئازادی' },
-                { challenge: ' (امروز)امرو', answer: 'ئەمڕۆ' },
-                { challenge: 'اگر', answer: 'ئەگەر' }
+                { challenge: 'احمد', answer: 'ئەحمەد' }, { challenge: 'مدرسه', answer: 'مەدرەسە' }, { challenge: 'دسته', answer: 'دەستە' }, { challenge: 'سهراب', answer: 'سۆهراب' }, { challenge: 'زور', answer: 'زۆر' }, { challenge: 'سیبەر', answer: 'سێبەر' }, { challenge: 'شیر', answer: 'شێر' }, { challenge: 'آزادی', answer: 'ئازادی' }, { challenge: 'امرو', answer: 'ئەمڕۆ' }, { challenge: 'اگر', answer: 'ئەگەر' }
             ],
             medium: [
-                { challenge: 'نوسین', answer: 'نووسین' },
-                { challenge: ' (عروس)بوک', answer: 'بووک' },
-                { challenge: 'کردستان', answer: 'کوردستان' },
-                { challenge: ' (خانه)مال', answer: 'ماڵ' },
-                { challenge: 'گل', answer: 'گوڵ' },
-                { challenge: 'سلاو', answer: 'سڵاو' },
-                { challenge: 'برو', answer: 'بڕۆ' },
-                { challenge: 'هاوری', answer: 'هاوڕێ' },
-                { challenge: ' (عصر در گویش کرمانجی)ایوار', answer: 'ئێڤار' },
-                { challenge: 'تلویزیون', answer: 'تەلەڤیزیۆن' }
+                { challenge: 'نوسین', answer: 'نووسین' }, { challenge: 'بوک', answer: 'بووک' }, { challenge: 'کردستان', answer: 'کوردستان' }, { challenge: 'مال', answer: 'ماڵ' }, { challenge: 'گل', answer: 'گوڵ' }, { challenge: 'سلاو', answer: 'سڵاو' }, { challenge: 'برو', answer: 'بڕۆ' }, { challenge: 'هاوری', answer: 'هاوڕێ' }, { challenge: 'ایوار', answer: 'ئێڤار' }, { challenge: 'تلویزیون', answer: 'تەلەڤیزیۆن' }
             ],
             hard: [
-                { challenge: 'صابون', answer: 'سابوون' },
-                { challenge: 'ثانیه', answer: 'سانیە' },
-                { challenge: 'حاضر', answer: 'حازر' },
-                { challenge: 'ظالم', answer: 'زاڵم' },
-                { challenge: 'لذت', answer: 'لەززەت' },
-                { challenge: 'خطر', answer: 'خەتەر' },
-                { challenge: 'لطفا', answer: 'لوتفەن' },
-                { challenge: 'مخصوص', answer: 'مەخسووس' },
-                { challenge: 'موضوع', answer: 'مەوزووع' },
-                { challenge: 'پروژه', answer: 'پڕۆژە' }
+                { challenge: 'صابون', answer: 'سابوون' }, { challenge: 'ثانیه', answer: 'سانیە' }, { challenge: 'حاضر', answer: 'حازر' }, { challenge: 'ظالم', answer: 'زاڵم' }, { challenge: 'لذت', answer: 'لێزەت' }, { challenge: 'خطر', answer: 'خەتەر' }, { challenge: 'لطفا', answer: 'لوتفەن' }, { challenge: 'مخصوص', answer: 'مەخسووس' }, { challenge: 'موضوع', answer: 'مەوزووع' }, { challenge: 'پروژه', answer: 'پڕۆژە' }
+            ],
+            advanced: [
+                { challenge: 'مادام هیچ شتی له مردن دربازمان ناکا.. لانیکم، با له ژیاندا خوشه ویستی فریامان کەوت. - پابلو نیرودا', answer: 'مادام هیچ شتێ لە مردن دەربازمان ناکا.. لانیکەم، با لە ژیاندا خۆشەویستی فریامان کەوێت. - پابلۆ نێرۆدا' },
+                { challenge: 'لای هلوی برزفری برزمژی، چون بژی شرطه نه وک چنده بژی - سواره ایلخانیزاده', answer: 'لای هەڵۆی بەرزەفڕی بەرزەمژی، چۆن بژی شەرتە نە وەک چەندە بژی - سوارە ئێلخانیزادە' },
+                { challenge: 'ایمه قت داوای بختوەریمان نکردوه ته نیا رنجیکی کمتر... - چارلز بوکوفسکی', answer: 'ئێمە قەت داوای بەختەوەریمان نەکردووە، تەنیا ڕەنجێکی کەمتر... - چارڵز بۆکۆفسکی' },
+                { challenge: 'او بالندانەی ناتوانن بفرن، به قفس دلین چارنوس! - بختیار علی', answer: 'ئەو باڵندانەی ناتوانن بفڕن، بە قەفەس دەڵێن چارەنووس! - بەختیار عەلی' }
             ]
         };
 
         let currentBank = [];
         let currentWordIndex = 0;
         let score = 0;
+        let currentLevel = '';
 
         function startTest(level) {
+            currentLevel = level;
             startArea.classList.add('hidden');
             dictationArea.classList.remove('hidden');
             
@@ -294,6 +279,11 @@
                 endTest();
                 return;
             }
+
+            const isAdvanced = currentLevel === 'advanced';
+            const term = isAdvanced ? 'عبارت' : 'کلمه';
+            challengePrompt.textContent = `املای صحیح کردی ${term} زیر را بنویسید:`;
+            nextWordButton.textContent = `${term} بعدی ←`;
 
             const currentWord = currentBank[currentWordIndex];
             challengeWord.textContent = currentWord.challenge;
@@ -318,31 +308,33 @@
             if (userInput === correctAnswer) {
                 score++;
             }
-            updateScore(); // Update score display after checking
+            updateScore();
 
             checkDictationButton.disabled = true;
             nextWordButton.disabled = false;
         }
 
         function endTest() {
+            const term = currentLevel === 'advanced' ? 'عبارت' : 'کلمه';
             challengeWord.textContent = 'پایان آزمون!';
-            dictationFeedback.innerHTML = `شما به ${score} کلمه از ${currentBank.length} کلمه پاسخ صحیح دادید. برای شروع مجدد، یک سطح را انتخاب کنید.`;
+            dictationFeedback.innerHTML = `شما به ${score} ${term} از ${currentBank.length} ${term} پاسخ صحیح دادید. برای شروع مجدد، یک سطح را انتخاب کنید.`;
             startArea.classList.remove('hidden');
             dictationArea.classList.add('hidden');
         }
 
         function updateScore() {
-            dictationScore.textContent = `امتیاز: ${score} / ${currentBank.length} | کلمه ${currentWordIndex + 1} از ${currentBank.length}`;
+            const term = currentLevel === 'advanced' ? 'عبارت' : 'کلمه';
+            dictationScore.textContent = `امتیاز: ${score} / ${currentBank.length} | ${term} ${currentWordIndex + 1} از ${currentBank.length}`;
         }
         
-        function generateCharDiff(originalWord, correctedWord) {
+        function generateCharDiff(originalText, correctedText) {
             let resultHtml = '';
-            const maxLength = Math.max(originalWord.length, correctedWord.length);
+            const maxLength = Math.max(originalText.length, correctedText.length);
             for (let i = 0; i < maxLength; i++) {
-                const originalChar = originalWord[i];
-                const correctedChar = correctedWord[i];
+                const originalChar = originalText[i] || '';
+                const correctedChar = correctedText[i] || '';
 
-                if (correctedChar === undefined) continue;
+                if (correctedChar === '') continue;
 
                 if (originalChar === correctedChar) {
                     resultHtml += `<span class="text-green-600">${correctedChar}</span>`;
@@ -354,7 +346,7 @@
         }
 
         // Event Listeners
-        document.querySelectorAll('.level-button').forEach(button => {
+        document.querySelectorAll('.dictation-button[data-level]').forEach(button => {
             button.addEventListener('click', (e) => {
                 const level = e.target.getAttribute('data-level');
                 startTest(level);
@@ -363,9 +355,8 @@
 
         checkDictationButton.addEventListener('click', checkAnswer);
         
-        // <<<<<<<<<<<<<<<  اصلاح باگ دکمه کلمه بعدی  >>>>>>>>>>>>>>>
         nextWordButton.addEventListener('click', () => {
-            currentWordIndex++; // این خط برای رفتن به کلمه بعدی ضروری است
+            currentWordIndex++;
             loadNextWord();
         });
 
@@ -375,7 +366,7 @@
                 if (!checkDictationButton.disabled) {
                     checkAnswer();
                 } else if (!nextWordButton.disabled) {
-                    nextWordButton.click(); // شبیه‌سازی کلیک روی دکمه بعدی با اینتر
+                    nextWordButton.click();
                 }
             }
         });
@@ -385,5 +376,3 @@
 
 </body>
 </html>
-
-
