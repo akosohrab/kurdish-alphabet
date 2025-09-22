@@ -170,7 +170,7 @@
         <h3 class="api-title">مامۆستای ئیملا (معلم دیکته) ✨</h3>
         
         <div id="startArea" class="text-center">
-            <p class="text-gray-600 mb-4">برای شروع آزمون املا، یک سطح را انتخاب کنید.</p>
+            <p class="text-gray-600 mb-4">حالا نوبت کمی تمرین است.! برای شروع آزمون املا، یک سطح را انتخاب کنید.</p>
             <div class="flex justify-center gap-2 flex-wrap">
                 <button class="dictation-button level-button" data-level="easy">آسان</button>
                 <button class="dictation-button level-button" data-level="medium">متوسط</button>
@@ -283,7 +283,7 @@
 
             const isAdvanced = currentLevel === 'advanced';
             const term = isAdvanced ? 'عبارت' : 'کلمه';
-            challengePrompt.textContent = `املای صحیح کردی ${term} زیر را بنویسید:`;
+            challengePrompt.textContent = `املای صحیح کوردی ${term} زیر را بنویسید:`;
             nextWordButton.textContent = `${term} بعدی ←`;
 
             const currentWord = currentBank[currentWordIndex];
@@ -381,3 +381,4 @@
 
 </body>
 </html>
+
