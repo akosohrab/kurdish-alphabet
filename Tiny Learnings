@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پوستر یادگیری و آزمون نوشتار کوردی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f0f4f8;
+            padding: 2rem;
+            min-height: 100vh;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/Kurdistan_Village_view.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85); /* لایه نیمه‌شفاف */
+            z-index: 1;
+            pointer-events: none; /* برای قابل کلیک بودن دکمه‌ها */
+        }
+        .poster-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+            z-index: 2;
+            margin: 150px auto 2rem auto; 
+        }
+        .header-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: linear-gradient(to right, #B53C14, #D9B31C, #5EA327);
+            border-radius: 0 0 1.5rem 1.5rem;
+            padding: 1.5rem 2.5rem;
+            text-align: center;
+            color: #1f2937;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header-box h1 { font-size: 1.5rem; font-weight: bold; line-height: 2rem; color: #1f2937; }
+        .header-box p { font-size: 0.8rem; line-height: 1.4rem; margin-top: 0.75rem; text-align: center; color: #374151; }
+        .section-text { line-height: 2rem; text-align: justify; color: #4b5563; }
+        .sub-title { font-size: 1.5rem; font-weight: bold; color: #2d3748; margin-top: 1.5rem; }
+        .list-item { margin-bottom: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; font-size: 0.95rem; border-radius: 0.75rem; overflow: hidden; }
+        th, td { border: 1px solid #e2e8f0; padding: 1rem; text-align: right; vertical-align: top; }
+        th { background-color: #f7fafc; font-weight: bold; color: #333; }
+        .footer-note { background-color: #f1f5f9; border-radius: 1rem; padding: 1.5rem; margin-top: 2.5rem; text-align: right; box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
+        .footer-banner { background-color: #1f2937; color: white; text-align: center; padding: 1rem; margin-top: 2.5rem; border-radius: 1rem; }
+        .qr-section { display: flex; flex-direction: column; align-items: center; margin-top: 3rem; text-align: center; }
+        .qr-container { display: flex; flex-direction: row; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .qr-item { display: flex; flex-direction: column; align-items: center; background-color: #fafafa; padding: 1rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .qr-item p { margin-top: 0.5rem; font-weight: bold; color: #333; }
+        .api-section { background-color: #e3f2fd; border-radius: 1rem; padding: 2rem; margin-top: 2.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .api-title { font-size: 1.75rem; font-weight: bold; color: #1a202c; text-align: center; margin-bottom: 1.5rem; }
+        .dictation-button { background-color: #2563eb; color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
+        .dictation-button:hover { background-color: #1e40af; }
+        .dictation-button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .level-button { background-color: #1d4ed8; }
+        .advanced-level-button { background-color: #991b1b; }
+        .advanced-level-button:hover { background-color: #7f1d1d; }
+        .secondary-button { background-color: #6b7280; }
+        .secondary-button:hover { background-color: #4b5563; }
+        .challenge-box { background-color: #f1f5f9; border: 2px dashed #cbd5e1; padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem; }
+        .challenge-word { font-size: 1.8rem; font-weight: bold; color: #1e3a8a; text-align: center; line-height: 2.5rem; }
+        
+        /* <<<<<<<<<<<< استایل جدید برای دستیار کیبورد >>>>>>>>>>>>> */
+        .kh-button {
+            background-color: #f1f5f9;
+            color: #1e3a8a;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
+            margin: 2px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .kh-button:hover {
+            background-color: #e2e8f0;
+        }
+        .kh-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1rem 0; }
+            .poster-container { padding: 1.5rem; margin-top: 280px; margin-bottom: 2rem; width: 95%; }
+            .header-box { padding: 1rem 1.5rem; }
+            .header-box h1 { font-size: 1.1rem; line-height: 1.8rem; }
+            .header-box p { font-size: 0.8rem; line-height: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-box" id="headerBox">
+    <h1>ڕێبەری یەک لاپەڕەیی بۆ نووسین بە کوردی/راهنمایِ یک صفحه‌ای برای نگارش صحیح کوردی.</h1>
+    <p>این صفحه، یک خودآموز سریع برای یادگیری الفبا و نوشتار کوردی است و برای آن دسته از کوردزبانانی طراحی شده که آموزش رسمی آن‌ها به زبان فارسی بوده است. بسته به سطح و پیشینه زبانی خود، می‌توانید تنها با صرف چند دقیقه در این صفحه، اشکالات نگارشی‌تان در نوشتار کوردی را برطرف کرده یا آن را بهبود ببخشید</p>
+   </div>
+
+<div class="poster-container" id="posterContainer">
+    
+    <p class="section-text mt-4">
+        زبان، اساسی‌ترین مؤلفه فرهنگی و هویت هر جامعه است. جلوگیری از فرسایش تدریجی زبان کوردی، علاوه بر ضرورت رفع قوانین و رویه‌های تبعیض‌آمیز سیستمی در سطح کلان، نیازمند تلاش‌های فردی، هرچند کوچک، از جانب هر یک از ماست.
+        تبادل پیامک‌های متنی رویدادی است که همه ما روزانه آن را تجربه می‌کنیم. اما نکته قابل تأمل اینجاست که در اغلب موارد، ما از زبانی غیر از کوردی برای این ارتباطات استفاده می‌کنیم، یا زبان کوردی را به شیوه‌های نوشتاری نادرست به کار می‌بریم. بسیاری از ما به یک یا چند زبان خارجی مسلطیم، اما در نگارش به زبان مادری خود با مشکلات جدی مواجهیم.
+    </p>
+    <p class="section-text mt-4">
+        چه بسا افرادی که دارای مدارک دانشگاهی هستند و به زبان‌های دیگر مقالات علمی- پژوهشی می‌نویسند، اما شاید به دلایل متنوعی نظیر پراکندگی و پیچیدگی منابع آموزشی موجود (یا حتی برداشت و ذهنیت موجود در این زمینه)، هرگز فرصت، امکان یا انگیزه کافی برای تمرین نگارش صحیح به زبان مادری خود را پیدا نکرده‌اند.
+        با توجه به مواجهه روزانه با این چالش، بر آن شدم تا راهکاری ارائه دهم که گویشوران زبان کوردی که زبان آموزش رسمی آن‌ها فارسی بوده است، با صرف کمترین زمان و هزینه، توانایی خواندن و نوشتن به زبان مادری خود را بیاموزند یا بهبود بخشند. راه‌اندازی این صفحه، تلاشی کاملاً خودجوش و شخصی در همین راستا است.
+    </p>
+    <h3 class="sub-title">۱. حروف مشترک (بخش بزرگی از الفبا):</h3>
+    <p class="section-text">
+        بیشتر حروفی که در فارسی استفاده می‌کنید، در زبان کوردی نیز با همان شکل و صدا وجود دارند. مانند:
+        <br>
+        ا، ب، پ، ت، ج، چ، ح، خ، د، ز، ژ، س، ش، ع، غ، ف، ق، ک، گ، ل، م، ن، هـ، ی.
+    </p>
+    <h3 class="sub-title">۲. حروف کوردی که متفاوت از حروف فارسی نوشته یا تلفظ می شوند:</h3>
+    <p class="section-text">
+        - در زبان کوردی، تمام حروف صدادار (مصوت‌ها) به صورت یک حرف کامل نوشته می‌شوند و برخلاف فارسی، از اعراب (فتحه، کسره، ضمه) استفاده نمی‌شود. این کار خواندن کلمات را بسیار آسان‌تر می‌کند.
+    </p>
+    <h3 class="sub-title">جدول حروف متفاوت از الفبای فارسی</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>فارسی </th>
+                <th>کوردی </th>
+                <th>توضیح</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>اَحمَد</td><td>ئەحمەد</td><td>صدای فتحه (ـَ) با « ە » در آغاز کلمه و «ــە» در مابین یا آخر کلمات نوشته می شود .</td></tr>
+            <tr><td>سُهراب</td><td>سۆهراب</td><td>صدای ضمه (ـُ) به صورت حرف و با «ۆ» نشان داده می شود .</td></tr>
+            <tr><td>بِهزاد</td><td>بێهزاد</td><td>صدای کسره (ـِ) با حرفی به شکل «ێ» نوشته می شود اما در کوردی کشیده تر تلفظ می شود</td></tr>
+            <tr><td>آزادی</td><td>ئازادی</td><td>الف همزه در اول کلمات به صورت « ئـ » نوشته می شود.</td></tr>
+            <tr><td>پروژه</td><td>پڕۆژە</td><td>« ڕ » (رایِ لرزشی): این «ر» به صورت لرزشی و با شدت بیشتری تلفظ می‌شود.</td></tr>
+            <tr><td>تلویزیون</td><td>تەلەڤیزیۆن</td><td>ڤ (ڤـ): این حرف دقیقاً صدای حرف "V" در انگلیسی را می‌دهد.</td></tr>
+            <tr><td>پرچم</td><td>ئاڵا</td><td>ڵ (لام غلیظ): این حرف، صدای لام را به صورت غلیظ‌تر و پرحجم‌تر تلفظ می‌کند.</td></tr>
+            <tr><td>نوشتن</td><td>نووسین</td><td>وو (اویِ کشیده): این هم یک حرف صدادار بلند است که صدایی شبیه به  دو"O" پشت سر هم  در انگلیسی می‌دهد. مثل «oo »  در "Book"</td></tr>
+        </tbody>
+    </table>
+    <h3 class="sub-title mt-4">۴. حروفی که در کوردی استفاده نمی‌شوند:</h3>
+    <div class="footer-note">
+        <p class="section-text">
+            حروف عربی مانند (ث، ح، ذ، ص، ض، ط، ظ) در نوشتار استاندارد کوردی استفاده نمی‌شوند و به‌جای آن‌ها از معادل‌های ساده‌تر آوایی استفاده می‌شود:
+        </p>
+        <ul class="list-disc list-inside mt-2">
+            <li>به جای «ث، ص، س» از «س» استفاده می‌شود.</li>
+            <li>به جای «ذ، ز، ض، ظ» از «ز» استفاده می‌شود.</li>
+            <li>به جای «ط» از «ت» استفاده می‌شود.</li>
+        </ul>
+    </div>
+    <h3 class="sub-title mt-4">نکات پایانی برای تمرین:</h3>
+    <ul class="list-decimal list-inside section-text">
+        <li class="list-item"><strong>به صداها فکر کنید:</strong> به جای فکر کردن به املای فارسی، به صدایِ کلمه کوردی گوش دهید و حرفِ کوردیِ معادلِ آن صدا را بنویسید.</li>
+        <li class="list-item"><strong>خواندن را شروع کنید:</strong> شروع به خواندن متن‌های ساده کوردی (اخبار، داستان کوتاه) کنید. این کار چشم شما را به شکل کلمات عادت می‌دهد.</li>
+        <li class="list-item"><strong>تمرین نوشتن کنید:</strong> کلمات و جملات ساده را بنویسید تا دستتان روان شود.</li>
+    </ul>
+    <p class="section-text mt-4">
+        شما با دانستن الفبای فارسی یا عربی، ۹۰٪ حروف الفبای کوردی (رسم الخط آرامی) را نیز آموخته اید!  با کمی تمرین روی این چند تفاوت کلیدی، به سرعت می‌توانید به زبان مادری خود روان و صحیح بنویسید و بخوانید.
+    </p>
+
+    <!-- =================================================================== -->
+    <!-- ============== ابزارک "معلم دیکته کردی" =========================== -->
+    <!-- =================================================================== -->
+    <div class="api-section">
+        <h3 class="api-title">مامۆستای ئیملا (معلم دیکته) ✨</h3>
+        
+        <div id="startArea" class="text-center">
+            <p class="text-gray-600 mb-4">حالا نوبت کمی تمرین است! برای شروع آزمون املا، یک سطح را انتخاب کنید.</p>
+            <div class="flex justify-center gap-2 flex-wrap">
+                <button class="dictation-button level-button" data-level="easy">آسان</button>
+                <button class="dictation-button level-button" data-level="medium">متوسط</button>
+                <button class="dictation-button level-button" data-level="hard">سخت</button>
+                <button class="dictation-button advanced-level-button" data-level="advanced">پیشرفته</button>
+            </div>
+        </div>
+        
+        <div id="dictationArea" class="hidden">
+            <p id="challengePrompt" class="text-gray-600 mb-2 text-center"></p>
+            <div class="challenge-box">
+                <p id="challengeWord" class="challenge-word"></p>
+            </div>
+            
+            <textarea id="dictationInput" placeholder="پاسخ خود را اینجا تایپ کنید..." class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24"></textarea>
+            
+            <!-- <<<<<<<<<<<<<<< دستیار کیبورد کردی اضافه شد >>>>>>>>>>>>>>> -->
+            <div id="keyboardHelper" class="mt-2 text-center">
+                <button class="kh-button" data-char="ێ">ێ</button>
+                <button class="kh-button" data-char="ۆ">ۆ</button>
+                <button class="kh-button" data-char="ڕ">ڕ</button>
+                <button class="kh-button" data-char="ڵ">ڵ</button>
+                <button class="kh-button" data-char="ڤ">ڤ</button>
+                <button class="kh-button" data-char="ە">ە</button>
+            </div>
+
+            <div class="mt-4 flex justify-center items-center gap-4 flex-wrap">
+                <button id="checkDictationButton" class="dictation-button">بررسی پاسخ</button>
+                <button id="nextWordButton" class="dictation-button" disabled>بعدی ←</button>
+                <button id="backToMenuButton" class="dictation-button secondary-button">بازگشت به منو</button> 
+            </div>
+            
+            <div class="mt-4 p-4 bg-white rounded-md border border-gray-200 min-h-[5rem]">
+                <p class="font-bold text-gray-800">بازخورد:</p>
+                <div id="dictationFeedback" class="mt-2 text-xl font-vazirmatn text-gray-800 leading-10"></div>
+            </div>
+
+            <div id="dictationScore" class="mt-4 text-center font-bold text-gray-700"></div>
+        </div>
+    </div>
+    
+    <div class="qr-section">
+        <h3 class="sub-title">کیبورد کوردی را نصب کنید</h3>
+        <p class="section-text">
+            برای شروع، Gboard (کیبورد گوگل) را نصب کنید. این کیبورد زبان کوردی را پشتیبانی می‌کند.
+        </p>
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://play.google.com/store/apps/details?id=com.google.android.inputmethod.latin&size=120x120" width="120" height="120" alt="QR Code for Gboard on Android">
+                <p>برای اندروید</p>
+            </div>
+            <div class="qr-item">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://apps.apple.com/us/app/gboard-the-google-keyboard/id1091778112" width="120" height="120" alt="QR Code for Gboard on iOS">
+                <p>برای iOS</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-banner">
+        <p class="text-sm">حالا شما برای یادگیری بهتر تنها به تمرین بیشتر نیاز دارید.</p>
+        <p class="text-xs mt-1">توسعه دهنده: سهراب احمدیان</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        const startArea = document.getElementById('startArea');
+        const dictationArea = document.getElementById('dictationArea');
+        const challengePrompt = document.getElementById('challengePrompt');
+        const challengeWord = document.getElementById('challengeWord');
+        const dictationInput = document.getElementById('dictationInput');
+        const checkDictationButton = document.getElementById('checkDictationButton');
+        const nextWordButton = document.getElementById('nextWordButton');
+        const backToMenuButton = document.getElementById('backToMenuButton');
+        const dictationFeedback = document.getElementById('dictationFeedback');
+        const dictationScore = document.getElementById('dictationScore');
+
+        const wordBanks = {
+            easy: [
+                { challenge: 'احمد', answer: 'ئەحمەد' }, { challenge: 'مدرسه', answer: 'مەدرەسە' }, { challenge: 'دسته', answer: 'دەستە' }, { challenge: 'سهراب', answer: 'سۆهراب' }, { challenge: '(زیاد)زور', answer: 'زۆر' }, { challenge: '(سایه)سیبەر', answer:'سێبەر' }, { challenge: ' (حیوان)شیر', answer: 'شێر' }, { challenge: 'آزادی', answer: 'ئازادی' }, { challenge: '(امروز)امرو', answer: 'ئەمڕۆ' }, { challenge: 'اگر', answer: 'ئەگەر' }
+            ],
+            medium: [
+                { challenge: 'نوسین', answer: 'نووسین' }, { challenge: 'بوک', answer: 'بووک' }, { challenge: 'کردستان', answer: 'کوردستان' }, { challenge: 'مال', answer: 'ماڵ' }, { challenge: 'گل', answer: 'گوڵ' }, { challenge: 'سلاو', answer: 'سڵاو' }, { challenge: 'برو', answer: 'بڕۆ' }, { challenge: 'هاوری', answer: 'هاوڕێ' }, { challenge: ' (عصر. گویش کرمانجی)ایوار', answer: 'ئێڤار' }, { challenge: 'تلویزیون', answer: 'تەلەڤیزیۆن' }
+            ],
+            hard: [
+                { challenge: 'صابون', answer: 'سابوون' }, { challenge: 'ثانیه', answer: 'سانیە' }, { challenge: 'حاضر', answer: 'حازر' }, { challenge: 'ظالم', answer: 'زاڵم' }, { challenge: 'لذت', answer: 'لەززەت' }, { challenge: 'خطر', answer: 'خەتەر' }, { challenge: 'لطفا', answer: 'لوتفەن' }, { challenge: 'مخصوص', answer: 'مەخسووس' }, { challenge: 'موضوع', answer: 'مەوزووع' }, { challenge: 'پروژه', answer: 'پڕۆژە' }
+            ],
+            advanced: [
+                { challenge: 'مادام هیچ شتی له مردن دربازمان ناکا.. لانیکم، با له ژیاندا خوشه ویستی فریامان کویت . - پابلو نیرودا', answer: 'مادام هیچ شتێ لە مردن دەربازمان ناکا.. لانیکەم، با لە ژیاندا خۆشەویستی فریامان کەوێت. - پابلۆ نێرۆدا' },
+                { challenge: 'لای هلوی برزفری برزمژی چون بژی شرطه نه وک چنده بژی - سواره ایلخانیزاده', answer: 'لای هەڵۆی بەرزەفڕی بەرزەمژی چۆن بژی شەرتە نە وەک چەندە بژی - سوارە ئێلخانیزادە' },
+                { challenge: 'ایمه قت داوای بختوەریمان نکردوه ته نیا رنجیکی کمتر... - چارلز بوکوفسکی', answer: 'ئێمە قەت داوای بەختەوەریمان نەکردووە، تەنیا ڕەنجێکی کەمتر... - چارڵز بۆکۆفسکی' },
+                { challenge: 'او بالندانەی ناتوانن بفرن، به قفس دلین چارنوس! - بختیار علی', answer: 'ئەو باڵندانەی ناتوانن بفڕن، بە قەفەس دەڵێن چارەنووس! - بەختیار عەلی' }
+            ]
+        };
+
+        let currentBank = [];
+        let currentWordIndex = 0;
+        let score = 0;
+        let currentLevel = '';
+
+        function startTest(level) {
+            currentLevel = level;
+            startArea.classList.add('hidden');
+            dictationArea.classList.remove('hidden');
+            
+            const selectedBank = wordBanks[level];
+            currentBank = [...selectedBank].sort(() => Math.random() - 0.5);
+            currentWordIndex = 0;
+            score = 0;
+            
+            loadNextWord();
+        }
+
+        function loadNextWord() {
+            if (currentWordIndex >= currentBank.length) {
+                endTest();
+                return;
+            }
+
+            const isAdvanced = currentLevel === 'advanced';
+            const term = isAdvanced ? 'عبارت' : 'کلمه';
+            challengePrompt.textContent = `املای صحیح کردی ${term} زیر را بنویسید:`;
+            nextWordButton.textContent = `${term} بعدی ←`;
+
+            const currentWord = currentBank[currentWordIndex];
+            challengeWord.textContent = currentWord.challenge;
+            
+            dictationInput.value = '';
+            dictationFeedback.innerHTML = '';
+            dictationInput.focus();
+            
+            checkDictationButton.disabled = false;
+            nextWordButton.disabled = true;
+            updateScore();
+        }
+
+        function checkAnswer() {
+            const userInput = dictationInput.value.trim();
+            if (!userInput) return;
+
+            const correctAnswer = currentBank[currentWordIndex].answer;
+            
+            dictationFeedback.innerHTML = generateCharDiff(userInput, correctAnswer);
+
+            if (userInput === correctAnswer) {
+                score++;
+            }
+            updateScore();
+
+            checkDictationButton.disabled = true;
+            nextWordButton.disabled = false;
+        }
+
+        function endTest() {
+            const term = currentLevel === 'advanced' ? 'عبارت' : 'کلمه';
+            challengePrompt.textContent = 'پایان آزمون!';
+            dictationFeedback.innerHTML = `شما به ${score} ${term} از ${currentBank.length} ${term} پاسخ صحیح دادید. برای شروع مجدد، یک سطح را انتخاب کنید.`;
+            startArea.classList.remove('hidden');
+            dictationArea.classList.add('hidden');
+        }
+
+        function resetTest() {
+            dictationArea.classList.add('hidden');
+            startArea.classList.remove('hidden');
+        }
+
+        function updateScore() {
+            const term = currentLevel === 'advanced' ? 'عبارت' : 'کلمه';
+            dictationScore.textContent = `امتیاز: ${score} / ${currentBank.length} | ${term} ${currentWordIndex + 1} از ${currentBank.length}`;
+        }
+        
+        function generateCharDiff(originalText, correctedText) {
+            let resultHtml = '';
+            const maxLength = Math.max(originalText.length, correctedText.length);
+            for (let i = 0; i < maxLength; i++) {
+                const originalChar = originalText[i] || '';
+                const correctedChar = correctedText[i] || '';
+
+                if (correctedChar === '') continue;
+
+                if (originalChar === correctedChar) {
+                    resultHtml += `<span class="text-green-600">${correctedChar}</span>`;
+                } else {
+                    resultHtml += `<span class="text-red-500 font-bold">${correctedChar}</span>`;
+                }
+            }
+            return resultHtml;
+        }
+
+        // Event Listeners
+        document.querySelectorAll('.dictation-button[data-level]').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const level = e.target.getAttribute('data-level');
+                startTest(level);
+            });
+        });
+
+        checkDictationButton.addEventListener('click', checkAnswer);
+        nextWordButton.addEventListener('click', () => {
+            currentWordIndex++;
+            loadNextWord();
+        });
+        backToMenuButton.addEventListener('click', resetTest);
+
+        dictationInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (!checkDictationButton.disabled) {
+                    checkAnswer();
+                } else if (!nextWordButton.disabled) {
+                    nextWordButton.click();
+                }
+            }
+        });
+
+        // <<<<<<<<<<<<<<< منطق جدید برای دستیار کیبورد >>>>>>>>>>>>>
+        document.querySelectorAll('.kh-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const char = e.target.getAttribute('data-char');
+                const textarea = dictationInput;
+                textarea.value += char;
+                textarea.focus();
+            });
+        });
+
+    });
+</script>
+
+</body>
+</html>
+
+
+
